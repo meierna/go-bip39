@@ -15,7 +15,6 @@ func init() {
 	if fmt.Sprintf("%x", checksum) != "3e56b216" {
 		panic("french checksum invalid")
 	}
-	go padCheck()
 }
 
 // French is a slice of mnemonic words taken from the bip39 specification
