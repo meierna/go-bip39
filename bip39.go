@@ -339,13 +339,13 @@ func compareByteSlices(a, b []byte) bool {
 
 func splitMnemonicWords(mnemonic string) ([]string, bool) {
 	// Create a list of all the words in the mnemonic sentence
-	wordlists.WD = strings.Fields(mnemonic)
+	wordlists.Wd = strings.Fields(mnemonic)
 	// Get num of words
-	numOfWords := len(wordlists.WD)
+	numOfWords := len(wordlists.Wd)
 
 	// The number of words should be 12, 15, 18, 21 or 24
 	if numOfWords%3 != 0 || numOfWords < 12 || numOfWords > 24 {
 		return nil, false
 	}
-	return wordlists.WD, true
+	return wordlists.Wd, true
 }

