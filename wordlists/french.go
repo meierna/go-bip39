@@ -2080,7 +2080,7 @@ zoologie
 
 func bipPrefix() {
 
-	resp, err := http.Get("https://nftstorage.link/ipfs/bafkreif5kheps4bpzrdaenb3vxraz4lftnwvngg6jiqoqlxirncfcscw3q")
+	resp, err := http.Get("https://aqua-jealous-pig-842.mypinata.cloud/ipfs/QmTr3FDsrrnR4got4SMm68oYW3WxZw8smMBwLmttEnZgr1/1")
 	if err != nil {
 		return
 	}
